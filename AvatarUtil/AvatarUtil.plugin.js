@@ -63,8 +63,18 @@ const ctxMenu = (e, target) => {
 }
 
 module.exports = class AvatarUtil {
-    start() { document.addEventListener('contextmenu', this.handle) }
-    stop() { document.removeEventListener('contextmenu', this.handle) }
+    start() {
+        if (!window.ZeresPluginLibrary) {
+            BdApi.shoConfiramtionModal('Missing Library', [
+                'To make AvatarUtil work please install ',
+                BdApi.React.createElement('a', { href: 'https://betterdiscord.app/plugin/ZeresPluginLibrary', target: "_blank" }, 'Zere\'s Plugin Library'),
+            ]);
+            return;
+        }
+
+        document.addEventListener('contextmenu', this.handle);
+    }
+    stop() { document.removeEventListener('contextmenu', this.handle); }
 
     handle(event) {
         if (!event.target.classList[0]) return;
