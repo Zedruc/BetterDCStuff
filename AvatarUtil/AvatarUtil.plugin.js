@@ -3,6 +3,7 @@
  * @author Zedruc
  * @version 1.0.0
  * @description Rightclick on a user's avatar on the profile to get different options for it
+ * @source https://github.com/Zedruc/BetterDCStuff
  */
 
 const request = require('request');
@@ -59,13 +60,30 @@ const ctxMenu = (e, target) => {
                 {
                     id: 'download',
                     label: 'Download Avatar',
-                    action: () => { this.downloadImage(avatarUrl, 'avatar'); }
+                    action: () => { downloadImage(avatarUrl, 'avatar'); }
                 }
             ]);
             ZeresPluginLibrary.ContextMenu.openContextMenu(event, ctxMenu);
 
         }
     } else return;
+}
+
+const downloadImage = (url, name) => {
+    fetch(url)
+        .then(resp => resp.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            // the filename you want
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(() => alert('An error sorry'));
 }
 
 module.exports = !global.ZeresPluginLibrary
@@ -98,23 +116,6 @@ module.exports = !global.ZeresPluginLibrary
                 document.addEventListener('contextmenu', this.handle);
             }
             onStop() { document.removeEventListener('contextmenu', this.handle); }
-
-            downloadImage(url, name) {
-                fetch(url)
-                    .then(resp => resp.blob())
-                    .then(blob => {
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.style.display = 'none';
-                        a.href = url;
-                        // the filename you want
-                        a.download = name;
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-                    })
-                    .catch(() => alert('An error sorry'));
-            }
 
             handle(event) {
                 if (!event.target.classList[0]) return;
