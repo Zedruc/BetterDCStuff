@@ -99,8 +99,7 @@ module.exports = !global.ZeresPluginLibrary
                         fs.writeFileSync(path.join(BdApi.Plugins.folder, '0PluginLibrary.plugin.js'), body);
                     });
                 }
-            }
-            );
+            });
         }
         start() {
             this.load();
