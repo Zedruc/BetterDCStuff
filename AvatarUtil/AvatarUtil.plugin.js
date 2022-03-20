@@ -20,7 +20,7 @@ const config = {
         version: '1.0.0',
         description: 'Rightclick on a user\'s avatar on the profile to get different options for it',
         github: 'https://github.com/Zedruc/BetterDCStuff',
-        github_raw: 'https://raw.githubusercontent.com/Zedruc/BetterDCStuff/AvatarUtil/AvatarUtil.plugin.js',
+        github_raw: 'https://raw.githubusercontent.com/Zedruc/BetterDCStuff/main/AvatarUtil/AvatarUtil.plugin.js',
     }/* ,
        changelog: [{
            title: 'NEW',
