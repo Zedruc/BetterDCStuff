@@ -83,7 +83,7 @@ const downloadImage = (url, name) => {
             a.click();
             window.URL.revokeObjectURL(url);
         })
-        .catch(() => alert('An error sorry'));
+        .catch(() => BdApi.showToast('An error occured trying to download the image', { type: 'error' }));
 }
 
 module.exports = !global.ZeresPluginLibrary
