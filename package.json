@@ -1,0 +1,34 @@
+{
+    "name": "betterdcstuff",
+    "version": "1.0.0",
+    "description": "All the BetterDiscord plugins I've made",
+    "private": true,
+    "scripts": {
+        "build": "babel",
+        "bundle": "webpack --config"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Zedruc/BetterDCStuff.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Zedruc/BetterDCStuff/issues"
+    },
+    "homepage": "https://github.com/Zedruc/BetterDCStuff#readme",
+    "devDependencies": {
+        "@babel/cli": "^7.17.6",
+        "@babel/core": "^7.17.8",
+        "@babel/preset-env": "^7.16.11",
+        "@babel/preset-react": "^7.16.7",
+        "babel-loader": "^8.2.4",
+        "babel-plugin-remove-use-strict": "^1.0.1",
+        "webpack": "^5.70.0",
+        "webpack-cli": "^4.9.2"
+    },
+    "dependencies": {
+        "request": "^2.88.2"
+    }
+}
