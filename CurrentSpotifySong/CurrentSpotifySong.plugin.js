@@ -5,8 +5,6 @@
  * @description Displays the currently playing Spotify song in Discord's activity panel
  */
 
-const panel = require('./components/panel.jsx');
-
 const config = {
     info: {
         name: 'CurrentSpotifySong',
@@ -19,14 +17,15 @@ const config = {
         github: 'https://github.com/Zedruc/BetterDCStuff',
         github_raw: 'https://raw.githubusercontent.com/Zedruc/BetterDCStuff/CurrentSpotifySong/CurrentSpotifySong.plugin.js',
     }/* ,
-     changelog: [{
-         title: 'NEW',
-         type: 'added',
-         items: ['New Feature'],
-     }] */
+      changelog: [{
+          title: 'NEW',
+          type: 'added',
+          items: ['New Feature'],
+      }] */
 };
 
-const request = require('request');
+
+const request = BdApi.findModuleByProps('request').request;
 var lastSong = '';
 var justPaused = false;
 
@@ -126,18 +125,18 @@ module.exports = !global.ZeresPluginLibrary
                         const toDisplay = `${artists[0].name}<br/>${name}`;
 
                         const SpotifyHtml = `
-                          <div class="body-1FrnJD" id="CSS-Spotify-Panel">
-                              <div class="gameWrapper-2TFy7F clickableGameWrapper-1xHQQL">
-                                  <div class="gameIconWrapper-zXQ03M">
-                                      <div class="gameIcon-1mDo1J desaturate-_Twf3u medium-1vKkpm gameIcon-2BIUJ3" id="CSS-Spotify-Icon"
-                                          style="background-image: url("${album.images[0].url}";);">
-                                      </div>
-                                  </div>
-                                  <div class="info-88fTUI">
-                                      <div class="size14-3fJ-ot title-338goq">${toDisplay}</div>
-                                  </div>
-                              </div>
-                          </div>`;
+                           <div class="body-1FrnJD" id="CSS-Spotify-Panel">
+                               <div class="gameWrapper-2TFy7F clickableGameWrapper-1xHQQL">
+                                   <div class="gameIconWrapper-zXQ03M">
+                                       <div class="gameIcon-1mDo1J desaturate-_Twf3u medium-1vKkpm gameIcon-2BIUJ3" id="CSS-Spotify-Icon"
+                                           style="background-image: url("${album.images[0].url}";);">
+                                       </div>
+                                   </div>
+                                   <div class="info-88fTUI">
+                                       <div class="size14-3fJ-ot title-338goq">${toDisplay}</div>
+                                   </div>
+                               </div>
+                           </div>`;
                         if (!ActivityPanel) {
                             // <div class="panel-2ZFCRb activityPanel-9icbyU"></div>
                             var el = document.createElement('div');
