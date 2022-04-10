@@ -25,9 +25,10 @@ const config = {
 };
 
 
-const request = BdApi.findModuleByProps('request').request;
+const request = require('request');
 var lastSong = '';
 var justPaused = false;
+var toolTip;
 
 module.exports = !global.ZeresPluginLibrary
     ? class {
@@ -51,9 +52,11 @@ module.exports = !global.ZeresPluginLibrary
     }
     : (([Plugin, Library]) => {
         const { PluginUpdater } = Library;
+        const { React, ReactDOM } = global.BdApi;
+
         PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
 
-        return class CamToggle extends Plugin {
+        return class CurrentSpotifySong extends Plugin {
             onStart() {
                 this._ = setInterval(() => {
                     // Spotify
@@ -108,6 +111,7 @@ module.exports = !global.ZeresPluginLibrary
                         if (_info.item == undefined || _info.item == null) {
                             return;
                         }
+
                         const { item: { name, artists, album } } = _info;
 
                         /**
@@ -137,6 +141,7 @@ module.exports = !global.ZeresPluginLibrary
                                    </div>
                                </div>
                            </div>`;
+
                         if (!ActivityPanel) {
                             // <div class="panel-2ZFCRb activityPanel-9icbyU"></div>
                             var el = document.createElement('div');
@@ -144,11 +149,12 @@ module.exports = !global.ZeresPluginLibrary
                             document.querySelector(`section.${panelsClass}`).prepend(el);
                             ActivityPanel = document.querySelector(`div.${activityPanelClass}`);
                         }
+
                         if (!ActivityPanel.querySelector('div#CSS-Spotify-Panel')) {
                             ActivityPanel.innerHTML += SpotifyHtml;
                         }
+
                         if (ActivityPanel && ActivityPanel.querySelector('div#CSS-Spotify-Panel')) {
-                            console.log('Panel and Spotify Panel exist');
                             const Panel = ActivityPanel.querySelector('div#CSS-Spotify-Panel');
                             const Icon = Panel.querySelector('#CSS-Spotify-Icon');
                             if (!Icon) return BdApi.showToast('[ZedsBDUtilities] Spotify module failed to execute properly. Please restart it in the plugin settings');
@@ -169,6 +175,11 @@ module.exports = !global.ZeresPluginLibrary
 
                             SongTitle.innerHTML = toDisplay;
                             lastSong = name;
+
+                            if (ActivityPanel.querySelector('div#CSS-Spotify-Panel') && document.querySelector('.title-338goq')) {
+                                if (!toolTip) toolTip = new ZeresPluginLibrary.Tooltip(document.querySelector('.title-338goq'), name);
+                                else toolTip.label = name;
+                            }
                         } else {
                             BdApi.showToast('[ZedsBDUtilities] Spotify module failed to execute properly. Please restart it in the plugin settings | Activity Panel not found/Spotify Panel not found');
                         }
@@ -178,7 +189,12 @@ module.exports = !global.ZeresPluginLibrary
 
             onStop() {
                 clearInterval(this._);
+                lastSong = '';
                 if (document.querySelector('div#CSS-Spotify-Panel')) document.querySelector('div#CSS-Spotify-Panel').remove();
+                var panel = document.querySelector(`.${ZeresPluginLibrary.WebpackModules.getAllByProps('activityPanel')[0].activityPanel}`);
+                if (panel) {
+                    panel.remove();
+                }
             }
         }
     })(global.ZeresPluginLibrary.buildPlugin(config));

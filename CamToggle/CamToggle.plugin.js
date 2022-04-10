@@ -12,7 +12,7 @@ const config = {
             name: 'Zedruc',
             discord_id: '568729687291985930',
         }],
-        version: '1.0.1',
+        version: '1.0.0',
         description: 'Adds a hotkey do toggle your camera',
         github: 'https://github.com/Zedruc/BetterDCStuff',
         github_raw: 'https://raw.githubusercontent.com/Zedruc/BetterDCStuff/main/CamToggle/CamToggle.plugin.js',
