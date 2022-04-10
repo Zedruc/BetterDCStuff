@@ -45,7 +45,7 @@ module.exports = !global.ZeresPluginLibrary
         stop() { }
     }
     : (([Plugin, Library]) => {
-        const { PluginUpdater, Settings } = Library;
+        const { PluginUpdater, Settings, DiscordModules } = Library;
         PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
 
         var enabled;
@@ -60,6 +60,8 @@ module.exports = !global.ZeresPluginLibrary
                 enabled = this.getVideoEnabled();
             }
             onStop() {
+                camera.setVideoEnabled(false); // make sure it's always off to prevent awkward moments 2
+                BdApi.showToast('Toggled camera off', { type: 'info' });
                 document.removeEventListener('keydown', this.handleDown);
                 document.removeEventListener('keyup', this.handleUp);
             }
@@ -82,6 +84,10 @@ module.exports = !global.ZeresPluginLibrary
                 }
 
                 if (isRightKeyCombo) {
+                    if (!DiscordModules.SelectedChannelStore.getVoiceChannelId()) {
+                        camera.setVideoEnabled(false); // make sure it's always off to prevent awkward moments
+                        return BdApi.showToast('You must be in a voice channel to toggle your camera', { type: 'error' });
+                    }
                     camera.setVideoEnabled(!enabled);
                     enabled = !enabled;
                     BdApi.showToast(`${enabled ? 'Enabled' : 'Disabled'} the camera`, { type: 'info' });
