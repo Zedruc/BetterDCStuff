@@ -27,7 +27,7 @@ const config = {
             discord_id: '568729687291985930',
         }],
         version: '1.0.0',
-        description: 'Rightclick on a user\'s avatar on the profile to get different options for it',
+        description: 'Allows you to download avatars, view them in your browser, and copy avatars\' links',
         github: 'https://github.com/Zedruc/BetterDCStuff',
         github_raw: 'https://raw.githubusercontent.com/Zedruc/BetterDCStuff/main/AvatarUtil/AvatarUtil.plugin.js',
     }/* ,
