@@ -10,6 +10,15 @@ const request = require('request');
 const fs = require('fs');
 const path = require('path');
 
+// webpack modules
+/**
+ * Move to top so we only have to search once
+ * -> "Does a full module search on context menu"
+ */
+var userAvatarClass;
+var avatarImgClass;
+var getUserById = BdApi.findModuleByProps('getUser').getUser;
+
 const config = {
     info: {
         name: 'AvatarUtil',
@@ -22,50 +31,55 @@ const config = {
         github: 'https://github.com/Zedruc/BetterDCStuff',
         github_raw: 'https://raw.githubusercontent.com/Zedruc/BetterDCStuff/main/AvatarUtil/AvatarUtil.plugin.js',
     }/* ,
-       changelog: [{
-           title: 'NEW',
-           type: 'added',
-           items: ['New Feature'],
-       }] */
+         changelog: [{
+             title: 'NEW',
+             type: 'added',
+             items: ['New Feature'],
+         }] */
 };
 
-const ctxMenu = (e, target) => {
-    const userAvatarClass = ZeresPluginLibrary.WebpackModules.getByProps('avatar', 'badgeList', 'nameTag');
-    const avatarImgClass = ZeresPluginLibrary.WebpackModules.getByProps('avatar', 'status', 'svg');
-    if (!userAvatarClass || !avatarImgClass) return;
+const ctxMenu = async (e, target) => {
+    if (!userAvatarClass || !avatarImgClass) {
+        // Search for them a second time, now everything has to be loaded so we should be able to find the modules
+        // has to be done because searching them in the start method returns null/undefined
+        userAvatarClass = ZeresPluginLibrary.WebpackModules.getByProps('avatar', 'badgeList', 'nameTag');
+        avatarImgClass = ZeresPluginLibrary.WebpackModules.getByProps('avatar', 'status', 'svg');
+    }
+    if (!userAvatarClass || !avatarImgClass) return BdApi.showToast('Could not load modules', { type: 'error' });
     if (target?.classList?.contains(userAvatarClass.avatar)) {
+
+        var userId = target.getAttribute('data-user-id');
+        const user = await getUserById(userId);
         var avatarUrl = target.querySelector(`.${avatarImgClass.avatar}`).getAttribute('src');
-        if (!avatarUrl) return BdApi.showToast('Something went wrong trying to retrieve the imag', { type: 'error' })
-        else {
-            // Context Menu with options
-            var temp = avatarUrl.split(/(\d+)(?!.*\d)/)[0];
-            temp += '512';
-            avatarUrl = temp;
+        const downloadName = `avatar-${user.username}`;
 
-            const ctxMenu = ZeresPluginLibrary.ContextMenu.buildMenu([
-                {
-                    id: 'copy',
-                    label: 'Copy URL to Clipboard',
-                    action: () => {
-                        require('electron').clipboard.writeText(avatarUrl);
-                    }
-                },
-                {
-                    id: 'open',
-                    label: 'Open in Browser',
-                    action: () => {
-                        require('electron').shell.openExternal(avatarUrl);
-                    }
-                },
-                {
-                    id: 'download',
-                    label: 'Download Avatar',
-                    action: () => { downloadImage(avatarUrl, 'avatar'); }
+        // Context Menu with options
+        var temp = avatarUrl.split(/(\d+)(?!.*\d)/)[0];
+        temp += '512';
+        avatarUrl = temp;
+
+        const ctxMenu = ZeresPluginLibrary.ContextMenu.buildMenu([
+            {
+                id: 'copy',
+                label: 'Copy URL to Clipboard',
+                action: () => {
+                    require('electron').clipboard.writeText(avatarUrl);
                 }
-            ]);
-            ZeresPluginLibrary.ContextMenu.openContextMenu(event, ctxMenu);
-
-        }
+            },
+            {
+                id: 'open',
+                label: 'Open in Browser',
+                action: () => {
+                    require('electron').shell.openExternal(avatarUrl);
+                }
+            },
+            {
+                id: 'download',
+                label: 'Download Avatar',
+                action: () => { downloadImage(avatarUrl, downloadName); }
+            }
+        ]);
+        ZeresPluginLibrary.ContextMenu.openContextMenu(event, ctxMenu);
     } else return;
 }
 
@@ -107,11 +121,18 @@ module.exports = !global.ZeresPluginLibrary
         stop() { }
     }
     : (([Plugin, Library]) => {
-        const { PluginUpdater } = Library;
-        PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
+        /**
+         * removed update line because the library does it automatically
+         * -> "attempts to check for update on construction/execution, the library auto checks for update anyways"
+         */
+        const { WebpackModules } = Library;
 
         return class AvatarUtil extends Plugin {
             onStart() {
+                // search webpack modules once
+                userAvatarClass = WebpackModules.getByProps('avatar', 'badgeList', 'nameTag');
+                avatarImgClass = WebpackModules.getByProps('avatar', 'status', 'svg'); ZeresPluginLibrary
+
                 document.addEventListener('contextmenu', this.handle);
             }
             onStop() { document.removeEventListener('contextmenu', this.handle); }
