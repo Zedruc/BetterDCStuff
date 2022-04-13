@@ -12,7 +12,7 @@ const path = require('path');
 
 // webpack modules
 /**
- * Move to top so we only have to search once
+ * Move to top so we only have to search twice
  * -> "Does a full module search on context menu"
  */
 var userAvatarClass;
