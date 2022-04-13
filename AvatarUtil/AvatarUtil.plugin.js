@@ -2,7 +2,7 @@
  * @name AvatarUtil
  * @author Zedruc
  * @version 1.0.0
- * @description Rightclick on a user's avatar on the profile to get different options for it
+ * @description Allows you to download avatars, view them in your browser, and copy avatars' links
  * @source https://github.com/Zedruc/BetterDCStuff
  */
 
