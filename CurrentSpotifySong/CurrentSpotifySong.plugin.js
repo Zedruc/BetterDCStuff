@@ -51,11 +51,6 @@ module.exports = !global.ZeresPluginLibrary
         stop() { }
     }
     : (([Plugin, Library]) => {
-        const { PluginUpdater } = Library;
-        const { React, ReactDOM } = global.BdApi;
-
-        PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
-
         return class CurrentSpotifySong extends Plugin {
             onStart() {
                 this._ = setInterval(() => {

@@ -49,9 +49,6 @@ module.exports = !global.ZeresPluginLibrary
         stop() { }
     }
     : (([Plugin, Library]) => {
-        const { PluginUpdater } = Library;
-        PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
-
         return class AvatarUtil extends Plugin {
             onStart() {
                 BdApi.findModuleByProps('dirtyDispatch').subscribe('CHANNEL_CREATE', this.E_GroupDM);

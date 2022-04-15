@@ -24,6 +24,7 @@
         "@babel/plugin-transform-react-jsx": "^7.17.3",
         "@babel/preset-env": "^7.16.11",
         "@babel/preset-react": "^7.16.7",
+        "@betterdiscordbuilder/bdbuilder": "^1.2.22",
         "babel-loader": "^8.2.4",
         "babel-plugin-remove-use-strict": "^1.0.1",
         "rollup-plugin-jsx": "^1.0.3",
