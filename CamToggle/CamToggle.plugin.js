@@ -24,6 +24,22 @@ const config = {
      }] */
 };
 
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
+
 module.exports = !global.ZeresPluginLibrary
     ? class {
         constructor() { this._config = config; }
@@ -76,12 +92,15 @@ module.exports = !global.ZeresPluginLibrary
                 if (keyCode === 18) keyCode = 164;
 
                 keysPressed[keyCode] = true;
-                var isRightKeyCombo = true;
+                const pressedKeysCodes = Object.keys(keysPressed).map((e) => { return Number(e) });
+                pressedKeysCodes.sort();
+                keyCombo.sort();
+                var isRightKeyCombo = arraysEqual(pressedKeysCodes, keyCombo);
 
-                for (let i = 0; i < keyCombo.length; i++) {
+                /* for (let i = 0; i < keyCombo.length; i++) {
                     const keyComboKey = keyCombo[i];
                     if (!keysPressed[keyComboKey]) isRightKeyCombo = false;
-                }
+                } */
 
                 if (isRightKeyCombo) {
                     if (!DiscordModules.SelectedChannelStore.getVoiceChannelId()) {
