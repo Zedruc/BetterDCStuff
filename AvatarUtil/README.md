@@ -1,5 +1,6 @@
-<h1 align="center">AvatarUtil</h1>
+  <h1 align="center">AvatarUtil</h1>
   <p align="center">Allows you to download avatars, view them in your browser, and copy avatars' links</p>
+  <p align="center">! Awaiting approval since: 4 months !</p>
 <p align="center">
   <img src="https://raw.githubusercontent.com/Zedruc/BetterDCStuff/main/AvatarUtil/_assets/preview.png">
 </p>
