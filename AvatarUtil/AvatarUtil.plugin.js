@@ -76,6 +76,7 @@ const ctxMenu = async (e, target) => {
         label: 'Copy URL to Clipboard',
         action: () => {
           DiscordNative.clipboard.copy(avatarUrl);
+          BdApi.showToast('Copied to clipboard', { type: 'info' });
         },
       },
       {
