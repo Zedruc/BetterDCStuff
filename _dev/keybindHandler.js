@@ -5,9 +5,8 @@
 class KeybindHandler {
   /**
    * @param {Array.<{codes: Number[], callback: (hotkeyObject: Object) => {}>} keybinds Array of objects representing hotkeys
-   * @param {Array.<{}>=} siis
    */
-  constructor(keybinds, siis) {
+  constructor(keybinds) {
     this._listeners = [];
     this._activeKeys = [];
     this.hotkeys = [];
