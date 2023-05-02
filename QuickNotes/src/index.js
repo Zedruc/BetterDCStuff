@@ -3,6 +3,9 @@
  * @author Zedruc
  * @version 1.0.0
  * @description An easy way to quickly take notes without leaving Discord
+ * @authorId 568729687291985930
+ * @authorLink https://github.com/Zedruc
+ * @website https://zedruc.net
  * @source https://github.com/Zedruc/BetterDCStuff
  */
 
