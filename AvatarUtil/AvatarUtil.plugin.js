@@ -13,7 +13,7 @@ const path = require('path');
 // webpack modules
 var userAvatarClass;
 var avatarImgClass;
-var getUserById = BdApi.findModuleByProps('getUser').getUser;
+var getUserById = BdApi.findModuleByProps('getCurrentUser', 'getUser').getUser;
 
 const config = {
   info: {
