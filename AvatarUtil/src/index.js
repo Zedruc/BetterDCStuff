@@ -11,12 +11,13 @@ const fs = require('fs');
 const path = require('path');
 
 // webpack modules
-var userAvatarClass;
-var avatarImgClass;
-var getUserById = BdApi.findModuleByProps('getUser').getUser;
+var userAvatarClass, avatarImgClass, getUserById;
 
 // BdApi
-const { ContextMenu } = BdApi;
+const {
+  Webpack: { Filters },
+  findModule,
+} = BdApi;
 
 const config = {
   info: {
@@ -43,16 +44,11 @@ const config = {
 };
 
 const loadModules = async () => {
-  userAvatarClass = ZeresPluginLibrary.WebpackModules.getByProps(
-    'avatar',
-    'avatarSize',
-    'badgeList'
+  userAvatarClass = findModule(Filters.byProps('avatar', 'avatarSize', 'badgeList'));
+  avatarImgClass = findModule(
+    Filters.byProps('avatarDecorationBorderPosition', 'avatarStack', 'mask')
   );
-  avatarImgClass = ZeresPluginLibrary.WebpackModules.getByProps(
-    'avatarDecorationBorderPosition',
-    'avatarStack',
-    'mask'
-  );
+  getUserById = findModule(Filters.byProps('getCurrentUser', 'getUser')).getUser;
 };
 
 const ctxMenu = async (e, target) => {
@@ -173,16 +169,6 @@ module.exports = !global.ZeresPluginLibrary
           loadModules();
 
           document.addEventListener('contextmenu', this.handle);
-          ZLibrary.ContextMenu.getDiscordMenu('MessageContextMenu').then(menu => {
-            BdApi.Patcher.after(
-              'AvatarUtil',
-              menu,
-              'default',
-              (thisObject, [props], returnValue) => {
-                console.log(returnValue);
-              }
-            );
-          });
         }
         onStop() {
           document.removeEventListener('contextmenu', this.handle);

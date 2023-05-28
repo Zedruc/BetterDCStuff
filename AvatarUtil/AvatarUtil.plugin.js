@@ -11,9 +11,13 @@ const fs = require('fs');
 const path = require('path');
 
 // webpack modules
-var userAvatarClass;
-var avatarImgClass;
-var getUserById = BdApi.findModuleByProps('getCurrentUser', 'getUser').getUser;
+var userAvatarClass, avatarImgClass, getUserById;
+
+// BdApi
+const {
+  Webpack: { Filters },
+  findModule,
+} = BdApi;
 
 const config = {
   info: {
@@ -39,17 +43,12 @@ const config = {
   ],
 };
 
-const loadModules = () => {
-  userAvatarClass = ZeresPluginLibrary.WebpackModules.getByProps(
-    'avatar',
-    'avatarSize',
-    'badgeList'
+const loadModules = async () => {
+  userAvatarClass = findModule(Filters.byProps('avatar', 'avatarSize', 'badgeList'));
+  avatarImgClass = findModule(
+    Filters.byProps('avatarDecorationBorderPosition', 'avatarStack', 'mask')
   );
-  avatarImgClass = ZeresPluginLibrary.WebpackModules.getByProps(
-    'avatarDecorationBorderPosition',
-    'avatarStack',
-    'mask'
-  );
+  getUserById = findModule(Filters.byProps('getCurrentUser', 'getUser')).getUser;
 };
 
 const ctxMenu = async (e, target) => {
